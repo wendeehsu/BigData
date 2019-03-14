@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import numpy as np
 import pandas as pd
+import xlsxwriter
 
 xl = pd.ExcelFile("hw1_text.xlsx")
 categories = ["銀行", "信用卡", "匯率", "台積電", "台灣", "日本"]
@@ -27,4 +28,4 @@ def GetWordBySheet():
 GetWordBySheet()
 with pd.ExcelWriter('SortWithGroup.xlsx', mode='a+') as writer:
 	for category in categories:
-		sheets[category].to_excel(writer, sheet_name= category, index = False)
+		sheets[category].to_excel(writer, sheet_name= category, index = False, engine='xlsxwriter')
