@@ -19,12 +19,12 @@ def DividetoCategory(news):
 			sheets[category].loc[rowIndex] = news
 
 def GetWordBySheet():
-    df = xl.parse("all")
-    nrows = df.shape[0]
-    for lineIndex in range(0, nrows):
-        DividetoCategory(df.loc[lineIndex,:])
+	df = xl.parse("all")
+	nrows = df.shape[0]
+	for lineIndex in range(0, nrows):
+		DividetoCategory(df.loc[lineIndex,:])
 
 GetWordBySheet()
 with pd.ExcelWriter('SortWithGroup.xlsx', mode='a+') as writer:
-    for category in categories:
-        sheets[category].to_excel(writer, sheet_name= category, index = False)
+	for category in categories:
+		sheets[category].to_excel(writer, sheet_name= category, index = False)
