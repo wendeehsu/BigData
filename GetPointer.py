@@ -2,11 +2,12 @@
 # -*- coding: utf-8 -*-
 import numpy as np
 import pandas as pd
+import xlsxwriter
 import math
 
 patchLimit = 10
-xl = pd.ExcelFile("hw_text.xlsx") # <---------- change to `hw_text.xlsx`
-df = xl.parse("all") # <--------------------------- change to `all`
+xl = pd.ExcelFile("hw1_text.xlsx")
+df = xl.parse("all")
 totalNewsNum = df.shape[0]
 outputFile = "KeyWords.xlsx"
 fields = ["銀行", "信用卡", "匯率", "台積電", "台灣", "日本"]
@@ -47,8 +48,8 @@ def CutContent(string):
 
 def CleanSheetList(keyList, lineIndex):
 	cleanList = keyList[keyList.all_DF > 1]
-	# if(lineIndex % 50 == 0):
-	# 	cleanList = cleanList[cleanList.all_TF >= 3]
+	if(lineIndex % 50 == 0):
+		cleanList = cleanList[cleanList.all_TF > 3]
 
 	return cleanList
 
@@ -94,6 +95,7 @@ def GetWordByArticle(news):
 def GetWordBySheet():
 	sheetList = pd.DataFrame(columns = columnTitles)  # create empty list to store keywords for each sheet
 	for lineIndex in range(totalNewsNum):
+		print("lineIndex: ",lineIndex)
 		keywords = GetWordByArticle(df.loc[lineIndex])
 		for wordIndex in range(keywords.shape[0]):
 			keyword = keywords.loc[wordIndex]
@@ -139,6 +141,7 @@ def GetLift(wordDF, allDF, fieldNewsNum):
 def GetDataByField(rawData, fieldName):
 	fieldIndex = fields.index(fieldName)
 	data = rawData[rawData.field % fieldNum[fieldName] == 0] # column = columnTitles
+	data = data.reset_index()
 	fieldSheet = pd.DataFrame(columns = pointers)
 	fieldSheet["word"] = data["word"]
 	fieldSheet["TF"] = data[columnTitles[2*fieldIndex+4]]
