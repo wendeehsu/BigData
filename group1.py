@@ -12,9 +12,7 @@ outputFile = "KeyWords.xlsx"
 patchLimit = 50
 inaccuracy = 0.01
 
-commenWords = [] # words that should not be keywords
-with open('commenWord.txt', encoding = "utf-8") as f:
-	commenWords = f.read().splitlines()
+
 
 def HasNumOrEn(string):
 	for ch in string:
