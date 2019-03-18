@@ -95,6 +95,7 @@ def GetWordByArticle(news):
 def GetWordBySheet():
 	sheetList = pd.DataFrame(columns = columnTitles)  # create empty list to store keywords for each sheet
 	for lineIndex in range(totalNewsNum):
+		print("lineIndex: ",lineIndex)
 		keywords = GetWordByArticle(df.loc[lineIndex])
 		for wordIndex in range(keywords.shape[0]):
 			keyword = keywords.loc[wordIndex]
