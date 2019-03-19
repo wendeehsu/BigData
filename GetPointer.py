@@ -163,7 +163,8 @@ def GetDataByField(rawData, fieldName):
 	return fieldSheet
 		
 with pd.ExcelWriter(outputFile, mode='a+') as writer:
+	rawData = GetWordBySheet()
 	for field in fields:
-		data = GetDataByField(GetWordBySheet(),field)
+		data = GetDataByField(rawData, field)
 		print(field, "\n", data)
 		data.to_excel(writer, sheet_name= field, index = False, engine = 'xlsxwriter')
