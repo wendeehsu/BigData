@@ -4,7 +4,11 @@ import numpy as np
 import pandas as pd
 import xlsxwriter
 import math
+import os
+from openpyxl import load_workbook
 
+start = 4	# <---------------------- change here
+end = 5    # <---------------------- change here
 patchLimit = 10
 xl = pd.ExcelFile("hw1_text.xlsx")
 df = xl.parse("all")
@@ -95,7 +99,7 @@ def GetWordByArticle(news):
 
 def GetWordBySheet():
 	sheetList = pd.DataFrame(columns = columnTitles)  # create empty list to store keywords for each sheet
-	for lineIndex in range(totalNewsNum):
+	for lineIndex in range(start-1, end):
 		keywords = GetWordByArticle(df.loc[lineIndex])
 		for wordIndex in range(keywords.shape[0]):
 			keyword = keywords.loc[wordIndex]
@@ -161,10 +165,27 @@ def GetDataByField(rawData, fieldName):
 		fieldSheet.loc[i, "Lift(用DF)"] = GetLift(fieldSheet.loc[i, "DF"], fieldSheet.loc[i, "全部DF"], fieldNewsNum)
 
 	return fieldSheet
-		
+
 with pd.ExcelWriter(outputFile, mode='a+') as writer:
 	rawData = GetWordBySheet()
 	for field in fields:
 		data = GetDataByField(rawData, field)
 		print(field, "\n", data)
 		data.to_excel(writer, sheet_name= field, index = False, engine = 'xlsxwriter')
+
+# with pd.ExcelWriter(outputFile, mode='a+') as writer:
+# 	beginrow = 0
+# 	HasHeader = False
+# 	rawData = GetWordBySheet()
+# 	for field in fields:
+# 		data = GetDataByField(rawData, field)
+# 		if(os.path.isfile(outputFile)):
+# 			output = pd.ExcelFile(outputFile)
+# 			df1 = output.parse(field)
+# 			HasHeader = True
+# 			beginrow = df1.shape[0]+1
+# 		print(field,beginrow)
+# 		data.to_excel(writer, sheet_name= field, 
+# 			startrow = beginrow, index = False, 
+# 			engine = 'xlsxwriter', header = not HasHeader)
+# 		
